@@ -1,0 +1,78 @@
+# ── RKD_Lang demo ──────────────────────────────────────────────────────
+# Variables & arithmetic
+let x = 10
+let y = 3
+print(x + y)       # 13
+print(x * y)       # 30
+print(x % y)       # 1
+
+# Strings & concatenation
+let name = "RKD"
+print("Hello, " + name + "!")
+
+# Booleans & comparison
+print(x > y)       # true
+print(x == 10)     # true
+print(x != y)      # true
+
+# If / else
+if x > 5 {
+    print("x is big")
+} else {
+    print("x is small")
+}
+
+# While loop
+let i = 0
+while i < 3 {
+    print("i = " + i)
+    i = i + 1
+}
+
+# Arrays
+let nums = [10, 20, 30, 40]
+print(nums[0])        # 10
+print(len(nums))      # 4
+
+# For loop
+for n in nums {
+    print(n * 2)
+}
+
+# Functions
+let add = fn(a, b) {
+    return a + b
+}
+print(add(7, 8))      # 15
+
+# Closures — the fn captures its defining environment
+let make_counter = fn() {
+    let count = 0
+    return fn() {
+        count = count + 1
+        return count
+    }
+}
+let counter = make_counter()
+print(counter())      # 1
+print(counter())      # 2
+print(counter())      # 3
+
+# Recursion
+let fib = fn(n) {
+    if n <= 1 {
+        return n
+    }
+    return fib(n - 1) + fib(n - 2)
+}
+print(fib(10))        # 55
+
+# Built-ins
+let nums2 = range(1, 6)   # [1, 2, 3, 4, 5]
+print(nums2)
+push(nums2, 6)
+print(len(nums2))     # 6
+
+# Null
+let nothing = null
+print(nothing)        # null
