@@ -4,7 +4,7 @@ from typing import Any
 
 
 class TT(Enum):
-    # Literals
+
     INT        = auto()
     FLOAT      = auto()
     STRING     = auto()
@@ -12,7 +12,6 @@ class TT(Enum):
     FALSE      = auto()
     NULL       = auto()
 
-    # Identifiers & keywords
     IDENT      = auto()
     LET        = auto()
     FN         = auto()
@@ -24,7 +23,6 @@ class TT(Enum):
     IN         = auto()
     PRINT      = auto()
 
-    # Operators
     PLUS       = auto()
     MINUS      = auto()
     STAR       = auto()
@@ -33,31 +31,27 @@ class TT(Enum):
     BANG       = auto()
     ASSIGN     = auto()
 
-    # Comparison
-    EQ         = auto()   # ==
-    NEQ        = auto()   # !=
-    LT         = auto()   # <
-    GT         = auto()   # >
-    LTE        = auto()   # <=
-    GTE        = auto()   # >=
+    EQ         = auto()   
+    NEQ        = auto()   
+    LT         = auto()
+    GT         = auto()
+    LTE        = auto()
+    GTE        = auto()
 
-    # Logical
-    AND        = auto()   # &&
-    OR         = auto()   # ||
+    AND        = auto()
+    OR         = auto()
 
-    # Delimiters
-    LPAREN     = auto()   # (
-    RPAREN     = auto()   # )
-    LBRACE     = auto()   # {
-    RBRACE     = auto()   # }
-    LBRACKET   = auto()   # [
-    RBRACKET   = auto()   # ]
-    COMMA      = auto()   # ,
-    SEMICOLON  = auto()   # ;
-    COLON      = auto()   # :
-    DOT        = auto()   # .
+    LPAREN     = auto()
+    RPAREN     = auto()
+    LBRACE     = auto()
+    RBRACE     = auto()
+    LBRACKET   = auto()
+    RBRACKET   = auto()
+    COMMA      = auto()
+    SEMICOLON  = auto()
+    COLON      = auto()
+    DOT        = auto()
 
-    # Control
     EOF        = auto()
     ILLEGAL    = auto()
 
@@ -82,7 +76,7 @@ KEYWORDS: dict[str, TT] = {
 class Token:
     type: TT
     value: Any = None
-    line: int = 0       # for error messages later
+    line: int = 0
 
     def __repr__(self):
         if self.value is not None:

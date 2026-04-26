@@ -12,8 +12,6 @@ class Lexer:
         self.pos    = 0
         self.line   = 1
 
-    # ── helpers ──────────────────────────────────────────────────────────
-
     def at_end(self) -> bool:
         return self.pos >= len(self.source)
 
@@ -40,7 +38,7 @@ class Lexer:
             ch = self.peek()
             if ch in " \t\r\n":
                 self.advance()
-            elif ch == "#":                     # single-line comment
+            elif ch == "#":
                 while not self.at_end() and self.peek() != "\n":
                     self.advance()
             else:
@@ -54,7 +52,7 @@ class Lexer:
         while self.peek().isdigit():
             self.advance()
         if self.peek() == "." and self.peek(1).isdigit():
-            self.advance()                      # consume '.'
+            self.advance()
             while self.peek().isdigit():
                 self.advance()
             return Token(TT.FLOAT, float(self.source[start:self.pos]), line)
@@ -65,7 +63,7 @@ class Lexer:
         result = []
         while not self.at_end() and self.peek() != '"':
             ch = self.advance()
-            if ch == "\\":                      # escape sequences
+            if ch == "\\":
                 esc = self.advance()
                 result.append({"n": "\n", "t": "\t", '"': '"',
                                "\\": "\\"}.get(esc, esc))
@@ -73,7 +71,7 @@ class Lexer:
                 result.append(ch)
         if self.at_end():
             raise LexError("Unterminated string", line)
-        self.advance()                          # closing "
+        self.advance()
         return Token(TT.STRING, "".join(result), line)
 
     def read_ident(self) -> Token:
@@ -83,11 +81,9 @@ class Lexer:
             self.advance()
         word = self.source[start:self.pos]
         tt   = KEYWORDS.get(word, TT.IDENT)
-        # Keyword literals carry no extra value; identifiers carry their name
         val  = word if tt == TT.IDENT else None
         return Token(tt, val, line)
 
-    # ── main tokenize loop ───────────────────────────────────────────────
 
     def tokenize(self) -> list[Token]:
         tokens: list[Token] = []
@@ -101,7 +97,6 @@ class Lexer:
             line = self.line
             ch   = self.advance()
 
-            # Single-char tokens
             SIMPLE = {
                 "+": TT.PLUS,  "-": TT.MINUS, "*": TT.STAR,
                 "%": TT.PERCENT, "(": TT.LPAREN, ")": TT.RPAREN,
@@ -113,7 +108,6 @@ class Lexer:
                 tokens.append(Token(SIMPLE[ch], None, line))
                 continue
 
-            # One-or-two-char tokens
             if ch == "!":
                 tokens.append(Token(TT.NEQ if self.match("=") else TT.BANG, None, line))
             elif ch == "=":
@@ -139,7 +133,7 @@ class Lexer:
             elif ch == '"':
                 tokens.append(self.read_string())
             elif ch.isdigit():
-                self.pos -= 1                   # unconsume, let read_number handle
+                self.pos -= 1
                 tokens.append(self.read_number())
             elif ch.isalpha() or ch == "_":
                 self.pos -= 1

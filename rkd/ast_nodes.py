@@ -12,13 +12,9 @@ from dataclasses import dataclass
 from typing import Any
 
 
-# ── Base ──────────────────────────────────────────────────────────────────────
-
 class Node:
     """Marker base class for all AST nodes."""
 
-
-# ── Expressions ───────────────────────────────────────────────────────────────
 
 @dataclass
 class IntLit(Node):
@@ -56,18 +52,17 @@ class IndexExpr(Node):
 
 @dataclass
 class BinOp(Node):
-    op: str          # "+", "-", "*", "/", "%", "==", "!=", "<", ">", "<=", ">="
-    left: Node
+    op: str
     right: Node
 
 @dataclass
 class UnaryOp(Node):
-    op: str          # "-" or "!"
+    op: str
     operand: Node
 
 @dataclass
 class LogicalOp(Node):
-    op: str          # "&&" or "||"
+    op: str
     left: Node
     right: Node
 
@@ -75,7 +70,7 @@ class LogicalOp(Node):
 class IfExpr(Node):
     condition: Node
     then_body: list[Node]
-    else_body: list[Node]   # empty list = no else
+    else_body: list[Node]
 
 @dataclass
 class FnExpr(Node):
@@ -85,7 +80,7 @@ class FnExpr(Node):
 
 @dataclass
 class CallExpr(Node):
-    callee: Node            # any expression that might be callable
+    callee: Node
     args: list[Node]
 
 @dataclass
@@ -95,8 +90,6 @@ class AssignExpr(Node):
     value: Node
 
 
-# ── Statements ────────────────────────────────────────────────────────────────
-
 @dataclass
 class LetStmt(Node):
     name: str
@@ -104,7 +97,7 @@ class LetStmt(Node):
 
 @dataclass
 class ReturnStmt(Node):
-    value: Node             # NullLit() if bare `return`
+    value: Node
 
 @dataclass
 class WhileStmt(Node):

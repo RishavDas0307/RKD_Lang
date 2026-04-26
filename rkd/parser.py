@@ -12,8 +12,6 @@ class Parser:
         self.tokens = tokens
         self.pos    = 0
 
-    # ── helpers ──────────────────────────────────────────────────────────
-
     def peek(self) -> Token:
         return self.tokens[self.pos]
 
@@ -44,15 +42,11 @@ class Parser:
     def check(self, *types: TT) -> bool:
         return self.peek_type() in types
 
-    # ── entry point ───────────────────────────────────────────────────────
-
     def parse(self) -> Program:
         stmts = []
         while not self.at_end():
             stmts.append(self.parse_statement())
         return Program(stmts)
-
-    # ── statements ────────────────────────────────────────────────────────
 
     def parse_statement(self) -> Node:
         match self.peek_type():
@@ -107,8 +101,6 @@ class Parser:
         self.match(TT.SEMICOLON)
         return ExprStmt(expr)
 
-    # ── block  { stmt* } ─────────────────────────────────────────────────
-
     def parse_block(self) -> list[Node]:
         self.eat(TT.LBRACE)
         stmts = []
@@ -117,25 +109,11 @@ class Parser:
         self.eat(TT.RBRACE)
         return stmts
 
-    # ── expressions (precedence climbing) ────────────────────────────────
-    #
-    #   parse_expr          → assignment (lowest)
-    #   parse_logical_or    → ||
-    #   parse_logical_and   → &&
-    #   parse_equality      → == !=
-    #   parse_comparison    → < > <= >=
-    #   parse_addition      → + -
-    #   parse_term          → * / %
-    #   parse_unary         → ! -
-    #   parse_call          → postfix () []
-    #   parse_primary       → literals, grouping, if, fn, array
-
     def parse_expr(self) -> Node:
-        # Check for assignment: IDENT = expr
         if self.check(TT.IDENT) and self.pos + 1 < len(self.tokens):
             if self.tokens[self.pos + 1].type == TT.ASSIGN:
                 name = self.advance().value
-                self.advance()              # consume =
+                self.advance()
                 val = self.parse_expr()
                 return AssignExpr(name, val)
         return self.parse_logical_or()
@@ -200,7 +178,7 @@ class Parser:
     def parse_call(self) -> Node:
         expr = self.parse_primary()
         while True:
-            if self.check(TT.LPAREN):       # function call
+            if self.check(TT.LPAREN):
                 self.advance()
                 args = []
                 if not self.check(TT.RPAREN):
@@ -209,7 +187,7 @@ class Parser:
                         args.append(self.parse_expr())
                 self.eat(TT.RPAREN)
                 expr = CallExpr(expr, args)
-            elif self.check(TT.LBRACKET):   # index access
+            elif self.check(TT.LBRACKET):
                 self.advance()
                 idx = self.parse_expr()
                 self.eat(TT.RBRACKET)
@@ -236,7 +214,7 @@ class Parser:
                 self.eat(TT.RPAREN)
                 return expr
 
-            case TT.LBRACKET:               # array literal
+            case TT.LBRACKET:
                 self.advance()
                 elems = []
                 if not self.check(TT.RBRACKET):
