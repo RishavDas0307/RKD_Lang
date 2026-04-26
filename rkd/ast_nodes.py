@@ -12,114 +12,119 @@ from dataclasses import dataclass
 from typing import Any
 
 
+
 class Node:
     """Marker base class for all AST nodes."""
 
 
+
+
 @dataclass
-class IntLit(Node):
+class IntLit:
     value: int
 
 @dataclass
-class FloatLit(Node):
+class FloatLit:
     value: float
 
 @dataclass
-class StringLit(Node):
+class StringLit:
     value: str
 
 @dataclass
-class BoolLit(Node):
+class BoolLit:
     value: bool
 
 @dataclass
-class NullLit(Node):
+class NullLit:
     pass
 
 @dataclass
-class Ident(Node):
+class Ident:
     name: str
 
 @dataclass
-class ArrayLit(Node):
-    elements: list[Node]
+class ArrayLit:
+    elements: list
 
 @dataclass
-class IndexExpr(Node):
+class IndexExpr:
     """array[index]"""
-    obj: Node
-    index: Node
+    obj: object
+    index: object
 
 @dataclass
-class BinOp(Node):
-    op: str
-    right: Node
+class BinOp:
+    op: str          
+    left: object
+    right: object
 
 @dataclass
-class UnaryOp(Node):
-    op: str
-    operand: Node
+class UnaryOp:
+    op: str         
+    operand: object
 
 @dataclass
-class LogicalOp(Node):
-    op: str
-    left: Node
-    right: Node
+class LogicalOp:
+    op: str        
+    left: object
+    right: object
 
 @dataclass
-class IfExpr(Node):
-    condition: Node
-    then_body: list[Node]
-    else_body: list[Node]
+class IfExpr:
+    condition: object
+    then_body: list
+    else_body: list   
 
 @dataclass
-class FnExpr(Node):
+class FnExpr:
     """fn(params) { body }  — anonymous function / lambda"""
-    params: list[str]
-    body: list[Node]
+    params: list
+    body: list
 
 @dataclass
-class CallExpr(Node):
-    callee: Node
-    args: list[Node]
+class CallExpr:
+    callee: object
+    args: list
 
 @dataclass
-class AssignExpr(Node):
+class AssignExpr:
     """x = value  (re-assignment, not let)"""
     name: str
-    value: Node
+    value: object
+
 
 
 @dataclass
-class LetStmt(Node):
+class LetStmt:
     name: str
-    value: Node
+    value: object
 
 @dataclass
-class ReturnStmt(Node):
-    value: Node
+class ReturnStmt:
+    value: object
 
 @dataclass
-class WhileStmt(Node):
-    condition: Node
-    body: list[Node]
+class WhileStmt:
+    condition: object
+    body: list
 
 @dataclass
-class ForStmt(Node):
+class ForStmt:
     """for item in iterable { body }"""
     var: str
-    iterable: Node
-    body: list[Node]
+    iterable: object
+    body: list
 
 @dataclass
-class PrintStmt(Node):
-    value: Node
+class PrintStmt:
+    value: object
 
 @dataclass
-class ExprStmt(Node):
+class ExprStmt:
     """A bare expression used as a statement (e.g. a function call)."""
-    expr: Node
+    expr: object
 
 @dataclass
-class Program(Node):
-    statements: list[Node]
+class Program:
+    statements: list
